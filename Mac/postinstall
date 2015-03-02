@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+my $kextDir = $ARGV[1] . "/Tcac.plugin/Contents/Library/kext/tcacplug.kext";
+my $setUidFile = $ARGV[1] . "/Tcac.plugin/Contents/Library/Tcac Services";
+
+exit(0) unless (-e $kextDir);
+
+foreach my $file (`/usr/bin/find \"$kextDir\"`) {
+	chomp($file);
+	system("/usr/sbin/chown -f root:wheel \"$file\"");
+}
+
+system("/usr/sbin/chown -f root:wheel \"$setUidFile\"");
+system("/bin/chmod -f u+s \"$setUidFile\"");
+
+exit(0);

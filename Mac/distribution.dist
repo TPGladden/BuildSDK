@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installer-gui-script minSpecVersion='1'>
+
+   <title>DISTRIBUTION_TITLE</title>
+
+   <options hostArchitectures='i386'/>
+   <options customize='never' rootVolumeOnly='true'/>
+   <!--
+       <welcome file="Welcome.rtf"/>
+       <readme  file="ReadMe.rtf"/>
+       <background file="background.png" scaling="proportional" alignment="bottomleft"/>
+   -->
+   <license file="License.rtf"/>
+
+  <domains enable_localSystem='true' enable_currentUserHome='false' enable_anywhere='false'/>
+
+   <choices-outline>
+     <line choice='A'/>
+   </choices-outline>
+
+   <!-- Close Browsers Here -->
+   <pkg-ref id='com.tcac.application'>
+      <must-close>
+	 <app id="com.apple.Safari"/>
+	 <app id="com.google.Chrome"/>
+	 <app id="org.mozilla.firefox"/>
+      </must-close>
+   </pkg-ref>
+
+   <choice id='A'
+	   enabled='InstallCheck()'
+	   selected='InstallCheck()'
+	   visible="false">
+	<pkg-ref id='com.tcac.application'>
+	   #files.pkg
+	</pkg-ref>
+	<!--onConclusion="RequireRestart"-->
+   </choice>
+
+   <installation-check script='InstallCheck()'/>
+   <script>
+
+      function InstallCheck()
+      {
+         if(system.compareVersions(system.version.ProductVersion, '10.6') == -1) {
+            my.result.title = system.localizedString('DISTRIBUTION_TITLE');
+            my.result.message = system.localizedStringWithFormat('OS_VER_ERR');
+            my.result.type = 'Fatal';
+            return false;
+         }
+
+         // Fail on G3
+         if (1 != system.sysctl('hw.vectorunit') ) {
+            return false;
+         }
+
+         return true;
+      }
+
+   </script>
+</installer-gui-script>

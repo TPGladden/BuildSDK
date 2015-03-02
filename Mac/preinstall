@@ -1,0 +1,18 @@
+#!/bin/bash
+
+###
+# Preinstall script for TcacPlug-in
+# Copyright 2013 Tim P. Gladden.  All rights reserved.
+###
+
+set -ex
+
+export PATH='/bin:/sbin:/usr/bin:/usr/sbin'
+
+#remove previous build of same version - 55
+/bin/rm -rf "$2/Tcac.plugin" 2> /dev/null
+
+#create a folder for log info
+if [ ! -d "$3/Library/Logs/Tcac" ] ; then
+	/bin/mkdir "$3/Library/Logs/Tcac" 2> /dev/null
+fi
